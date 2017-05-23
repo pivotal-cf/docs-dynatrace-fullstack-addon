@@ -1,4 +1,10 @@
-## Pivotal Cloud Foundry Partners Template
+## Dynatrace Full-Stack Add-on for PCF
+
+Make sure to use the above product name consistently. (Notice the capitalization and the hyphenation.)
+
+On the first use in body text in a page, spell out Pivotal Cloud Foundry (PCF).
+
+### About the Partner Template for Tile Documentation
 
 This template helps partners prepare documentation for Pivotal Cloud Foundry (PCF) partner services that appear on [Pivotal Network](https://network.pivotal.io/). 
 
