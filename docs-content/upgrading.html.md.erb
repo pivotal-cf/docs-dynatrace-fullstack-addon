@@ -1,0 +1,44 @@
+---
+title: Upgrading the Dynatrace Full-Stack Add-On for PCF
+owner: Partners
+---
+
+<style>
+    .note.warning {
+        background-color: #fdd;
+        border-color: #fbb
+    }
+
+    .note.warning:before {
+        color: #f99;
+     }
+</style>
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to upgrade the Dynatrace Full-Stack add-on.
+
+##<a id="upgrading"></a>Upgrading the Dynatrace Full-Stack Add-On
+
+1. Upload the new Dynatrace Full-Stack Add-on release to BOSH director
+   Follow the guideline from the installation section.
+
+2. Retrieve the latest runtime config.
+  <pre class="terminal">
+    $ bosh runtime-config > PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
+  </pre>
+
+3. Change the release version.
+  <pre>
+releases:
+\- {name: dynatrace-oneagent, version: NEW\_VERSION}
+  </pre>
+
+
+4. Update the runtime config.
+  <pre class="terminal">
+    $ bosh update runtime-config PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
+  </pre>
+
+5. Navigate to your **Installation Dashboard** in Ops Manager.
+6. Click **Apply Changes**.

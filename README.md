@@ -6,7 +6,7 @@ On the first use in body text in a page, spell out Pivotal Cloud Foundry (PCF).
 
 ### About the Partner Template for Tile Documentation
 
-This template helps partners prepare documentation for Pivotal Cloud Foundry (PCF) partner services that appear on [Pivotal Network](https://network.pivotal.io/). 
+This template helps partners prepare documentation for Pivotal Cloud Foundry (PCF) partner services that appear on [Pivotal Network](https://network.pivotal.io/).
 
 ### <a id='overview'></a>Overview
 
@@ -27,7 +27,7 @@ To begin using this repo to develop your documentation, perform the following st
 
 1. Make a fork of this repo.
 1. Clone your fork onto your local machine.
-1. Work your way through each topic, replacing the placeholders in ALL-CAPS and following the instructions in **bold**. 
+1. Work your way through each topic, replacing the placeholders in ALL-CAPS and following the instructions in **bold**.
     * When writing your documentation, follow the guidelines in [Style Notes for Tile Authors](style-guide.md).
 1. Complete the subnav by replacing the placeholders in ALL-CAPS in the subnav file at `docs-book/master_middleman/source/subnavs/myservice_subnav.erb` in this repo.
 1. View your documentation as a live local site in a browser, by following the steps below in the [How To Use Bookbinder To View Your Docs](#bookbinder) section.
@@ -86,7 +86,7 @@ In Terminal window:
     ```
     $ ssh-keygen
     Generating public/private rsa key pair.
-    Enter file in which to save the key (/Users/pspinrad/.ssh/id_rsa): 
+    Enter file in which to save the key (/Users/pspinrad/.ssh/id_rsa):
     ```
 
 1. Get a [Github](http://github.com) account.
@@ -144,7 +144,7 @@ In Terminal window:
 1. Run `bundle exec bookbinder watch` to build the book on your machine.
 
    `$ bundle exec bookbinder watch`
-   
+
 1. Browse to `localhost:4567` to view the book locally and "watch" any changes that you make to source `html.md.erb` files. As you make and save changes to the local source files for your site, you will see them in your browser after a slight delay.
 
 1. After each session of writing or revising your docs source files, commit and push them to your github repo.
@@ -154,4 +154,3 @@ Happy documenting!
 ![Partner Template landing page](./docs-book/master_middleman/source/images/partner-template-landing.png)
 
 ![Partner Template service index page](./docs-book/master_middleman/source/images/partner-template-service-index.png)
-

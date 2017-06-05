@@ -1,28 +1,121 @@
 ---
-title: Installing and Configuring YOUR-PRODUCT-NAME
+title: Installing and Configuring Dynatrace Full-Stack Add-on
 owner: Partners
 ---
 
-This topic describes how to install and configure YOUR-PRODUCT-NAME.
+This topic describes how to install and configure the Dynatrace Full-Stack Add-on.
 
-##<a id='install'></a> Install and Configure YOUR-PRODUCT-NAME
+##<a id='create-mfest'></a> Create the Dynatrace Manifest
 
-1. Download the product file from Pivotal Network.
+Follow these steps to create the Dynatrace manifest for your deployment:
 
-1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file. 
+1. Create a Dyntrace manifest file `runtime-config-dyntrace.yml`, starting with the code below as a template.
+  <pre>releases:
+  \- {name: dynatrace-oneagent, <strong>version</strong>: 0.3.2}<br>
+  addons:
+  \- name: dynatrace-oneagent-addon
+      jobs:
+      \- <strong>name</strong>: dynatrace-oneagent
+        release: dynatrace-oneagent
+      include:
+        stemcell:
+        \- <strong>os</strong>: ubuntu-trusty
+      properties:
+        dynatrace:
+          <strong>environmentid</strong>: abc12345
+          <strong>apitoken</strong>: bvQ0e--secret--2fEL9B
+          <strong>apiurl</strong>: https://{your-managed-cluster.com}/e/{environmentid}/api
+          starthelper: 1
+  \#optional: extra addon configuration for Windows cells
+  \- name: dynatrace-oneagent-windows-addon
+      jobs:
+      \- <strong>name</strong>: dynatrace-oneagent-windows
+        release: dynatrace-oneagent
+      include:
+        stemcell:
+        \- <strong>os</strong>: windows2012R2
+      properties:
+        dynatrace:
+          <strong>environmentid</strong>: abc12345
+          <strong>apitoken</strong>: bvQ0e--secret--2fEL9B
+          <strong>apiurl</strong>: https://{your-managed-cluster.com}/e/{environmentid}/api
+  </pre>
 
-1. Under the **Import a Product** button, click **+** next to the version number of YOUR-PRODUCT-NAME. 
-This adds the tile to your staging area.
+2. Replace the values listed in the template as follows:
+  * <code>releases: - version</code>: Specify the version number of your Dynatrace Full-Stack Add-on download from Pivotal Network.
+  * <code>jobs: - name</code>: Do not change the name of this job. It must be `dynatrace-oneagent` for Linux VMs.
+  * <code>include: stemcell - os</code>: Do not change the OS type.
+  * <code>environmentid</code>: Replace with your environmentId from the Dynatrace UI
+  * <code>apitoken</code>: Replace with your PaaS token from the Dynatrace UI
+  * <code>apiurl</code>: Replace with your Dynatrace Managed URL, including the environmentId. An example URL might look like the following `https://{your-managed-cluster.com}/e/{environmentid}/api`
 
-1. Click the newly added **YOUR-PRODUCT-NAME** tile.
+3. Optional: The add-on supports additional configuration properties:
+  * <code>sslmode</code>: Set to `all` if you want to accept all self-signed SSL certificates.
+  * <code>downloadurl</code> Specify a direct download URL for the Dynatrace OneAgent. If this propery is set, bosh will download the OneAgent from this location.
+  * <code>proxy</code>: Specify the proxy to be used for communication.
 
-1. **This portion of the procedure should tell the users how to configure the newly added tile by
-walking them through the sections. Which fields should they fill out? What are the different
-checkboxes? Include relevant screenshots here.** 
+4. If you also want to deploy Dynatrace to Windows Diego cells, please configure a second add-on section for the `dynatrace-oneagent-windows` job. The properties for `environmentid`, `apitoken`, and `apiurl` remain the same as with the normal Linux configuration.
+  * <code>jobs: - name</code>: For Windows cells it must be `dynatrace-oneagent-windows`.
+  * <code>include: stemcell - os</code>: For Windows cells it must be `windows2012R2`.
 
-1. Click **Save**.
+<p class="note"><strong>Note</strong>: To modify the configuration in an existing deployment, you must update the manifest file and redeploy.</p>
 
-1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to install YOUR-PRODUCT-NAME tile.
 
-**If needed, include additional configuration information below. For example, maybe there are
-configuration options not required for installation but which could be useful for certain users.**
+##<a id="download-deploy"></a>Download and Deploy the Dynatrace Full-Stack Add-On
+
+After deploying Ops Manager, perform the following steps to download and deploy the Dynatrace Full-Stack Add-on:
+
+1. Download the Dynatrace Full-Stack Add-on software binary from the [Pivotal Network](https://network.pivotal.io/products/p-dynatrace-addon) to your local machine.
+
+2. Copy the software binary to your Ops Manager instance.
+<pre class="terminal">$ scp -i PATH/TO/PRIVATE/KEY dynatrace-release.tar.gz ubuntu@YOUR-OPS-MANAGER-VM-IP:</pre>
+
+3. Copy the Dynatrace manifest file to your Ops Manager instance.
+<pre class="terminal">$ scp -i PATH/TO/PRIVATE/KEY runtime-config-dyntrace.yml ubuntu@YOUR-OPS-MANAGER-VM-IP:</pre>
+
+4. SSH into Ops Manager.
+ <pre class="terminal">$ ssh -i PATH-TO-PRIVATE-KEY ubuntu@YOUR-OPS-MANAGER-VM-IP</pre>
+
+5. On the Ops Manager VM, navigate to the software binary location in your working directory.
+<pre class="terminal">
+$ cd PATH-TO-BINARY</pre>
+
+6. On the Ops Manager VM, target the internal IP address of your BOSH Director. When prompted, enter your BOSH Director credentials. To retrieve your BOSH Director credentials, navigate to Ops Manager, click the **Credentials** tab, and click **Link to Credential** next to **Director Credentials**.
+<pre class="terminal">
+$ bosh --ca-cert /var/tempest/workspaces/default/root\_ca\_certificate target YOUR-BOSH-DIRECTOR-INTERNAL-IP
+Target set to 'p-bosh'
+Your username: director
+Enter password: ******************
+Logged in as 'director'
+</pre>
+
+7. Upload your release.
+<pre class="terminal">$ bosh upload release PATH-TO-BINARY/dynatrace-release.tar.gz</pre>
+
+8. Optionally, from the command line, confirm that the upload of the Dynatrace software binary completed. You should see the Dynatrace binary file.
+<pre class="terminal">$ bosh releases</pre>
+
+9. Update your runtime configuration to include the Dynatrace Add-on.
+<p class="note"><strong>Note</strong>: If you installed other BOSH add-ons, you must merge the Dynatrace manifest into your existing add-on manifest. Append the contents of runtime-config-dyntrace.yml to your existing add-on YML file.</p>
+<pre class="terminal">$ bosh update runtime-config PATH/runtime-config-dyntrace.yml</pre>
+
+10. Verify your runtime configuration changes match what you specified in the Dynatrace manifest file.
+
+    <pre class="terminal">
+    $ bosh runtime-config
+    Acting as user 'admin' on 'micro'
+
+    releases:
+    <span>-</span> {name: dynatrace-oneagent, version: 0.3.2}
+
+    addons:
+    <span>-</span> name: dynatrace-oneagent-addon
+      jobs:
+      <span>-</span> name: dynatrace-oneagent
+        release: dynatrace-oneagent
+    ...
+    </pre>
+
+11. Navigate to your **Installation Dashboard** in Ops Manager.
+
+12. Click **Apply Changes**
