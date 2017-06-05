@@ -7,9 +7,9 @@ owner: Partners
 
 This topic provides instructions to verify that Dynatrace OneAgent works with your Pivotal Cloud Foundry (PCF) deployment.
 
-## <a id="verify"></a>Verify Your Dynatrace Add-on Installation
+## <a id="verify"></a>Verify Your Dynatrace Add-on for PCF Installation
 
-1. Check your Dynatrace Environment for new monitored hosts
+1. Check your Dynatrace Environment for new monitored hosts.
 
 2. [BOSH ssh](https://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html#bosh-ssh) into one of the VMs in your deployment.
 
@@ -22,17 +22,17 @@ This topic provides instructions to verify that Dynatrace OneAgent works with yo
 
 5. If `monit summary` does not list `dynatrace-oneagent`, check `/var/vcap/sys/log/dynatrace-oneagent/` logs for errors.
 
-## <a id='known-limitations'></a>Known limitations
+## <a id='known-limitations'></a>Known Limitations
 
-### <a id="dynatrace-installation-issues"></a>p-invitations app does not start
+### <a id="dynatrace-installation-issues"></a>p-invitations App Does not Start
 
 #### Symptom
-Running the errands for installing AppsManager fails
+Running the errands for installing AppsManager fails.
 
-#### Explanation: Too restrictive memory limit
+#### Explanation: Memory limit is too restrictive
 As part of deploying AppsManager, a number of apps are being deployed to the Elastic Runtime. Starting `p-invitations` app might fail due to restrictive memory limits (128M).
 
 #### Solution
-In the Dynatrace UI, go to the Settins screen, click Monitoring overview, and select the Process groups tab. Search for p-invitations process group and disable monitoring for all p-invitations groups found.
+In the Dynatrace UI, go to the Settings screen, click Monitoring Overview, and select the Process Groups tab. Search for the p-invitations process group and disable monitoring for all p-invitations groups found.
 
 Re-run the deployment and p-invitations will be disabled from monitoring going forward.

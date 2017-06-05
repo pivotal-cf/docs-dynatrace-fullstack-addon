@@ -1,9 +1,9 @@
 ---
-title: Installing and Configuring Dynatrace Full-Stack Add-on
+title: Installing and Configuring Dynatrace Full-Stack Add-on for PCF
 owner: Partners
 ---
 
-This topic describes how to install and configure the Dynatrace Full-Stack Add-on.
+This topic describes how to install and configure the Dynatrace Full-Stack Add-on for PCF.
 
 ##<a id='create-mfest'></a> Create the Dynatrace Manifest
 
@@ -42,7 +42,7 @@ Follow these steps to create the Dynatrace manifest for your deployment:
   </pre>
 
 2. Replace the values listed in the template as follows:
-  * <code>releases: - version</code>: Specify the version number of your Dynatrace Full-Stack Add-on download from Pivotal Network.
+  * <code>releases: - version</code>: Specify the version number of your Dynatrace Full-Stack Add-on for PCF download from Pivotal Network.
   * <code>jobs: - name</code>: Do not change the name of this job. It must be `dynatrace-oneagent` for Linux VMs.
   * <code>include: stemcell - os</code>: Do not change the OS type.
   * <code>environmentid</code>: Replace with your environmentId from the Dynatrace UI
@@ -61,11 +61,11 @@ Follow these steps to create the Dynatrace manifest for your deployment:
 <p class="note"><strong>Note</strong>: To modify the configuration in an existing deployment, you must update the manifest file and redeploy.</p>
 
 
-##<a id="download-deploy"></a>Download and Deploy the Dynatrace Full-Stack Add-On
+##<a id="download-deploy"></a>Download and Deploy the Dynatrace Full-Stack Add-on for PCF
 
-After deploying Ops Manager, perform the following steps to download and deploy the Dynatrace Full-Stack Add-on:
+After deploying Ops Manager, perform the following steps to download and deploy the Dynatrace Full-Stack Add-on for PCF:
 
-1. Download the Dynatrace Full-Stack Add-on software binary from the [Pivotal Network](https://network.pivotal.io/products/p-dynatrace-addon) to your local machine.
+1. Download the Dynatrace Full-Stack Add-on for PCF software binary from the [Pivotal Network](https://network.pivotal.io/products/p-dynatrace-addon) to your local machine.
 
 2. Copy the software binary to your Ops Manager instance.
 <pre class="terminal">$ scp -i PATH/TO/PRIVATE/KEY dynatrace-release.tar.gz ubuntu@YOUR-OPS-MANAGER-VM-IP:</pre>
@@ -95,8 +95,8 @@ Logged in as 'director'
 8. Optionally, from the command line, confirm that the upload of the Dynatrace software binary completed. You should see the Dynatrace binary file.
 <pre class="terminal">$ bosh releases</pre>
 
-9. Update your runtime configuration to include the Dynatrace Add-on.
-<p class="note"><strong>Note</strong>: If you installed other BOSH add-ons, you must merge the Dynatrace manifest into your existing add-on manifest. Append the contents of runtime-config-dyntrace.yml to your existing add-on YML file.</p>
+9. Update your runtime configuration to include the Dynatrace Add-on for PCF.
+<p class="note"><strong>Note</strong>: If you installed other BOSH add-ons, you must merge the Dynatrace manifest into your existing add-on manifest. Append the contents of <code>runtime-config-dyntrace.yml</code> to your existing add-on YML file.</p>
 <pre class="terminal">$ bosh update runtime-config PATH/runtime-config-dyntrace.yml</pre>
 
 10. Verify your runtime configuration changes match what you specified in the Dynatrace manifest file.
@@ -118,4 +118,4 @@ Logged in as 'director'
 
 11. Navigate to your **Installation Dashboard** in Ops Manager.
 
-12. Click **Apply Changes**
+12. Click **Apply Changes**.
