@@ -3,13 +3,13 @@ title: Installing and Configuring Dynatrace Full-Stack Add-on for PCF
 owner: Partners
 ---
 
-This topic describes how to install and configure the Dynatrace Full-Stack Add-on for PCF.
+This topic explains how to install and configure the Dynatrace Full-Stack Add-on for PCF.
 
 ##<a id='create-mfest'></a> Create the Dynatrace Manifest
 
 Follow these steps to create the Dynatrace manifest for your deployment:
 
-1. Create a Dyntrace manifest file `runtime-config-dyntrace.yml`, starting with the code below as a template.
+1. Create a Dyntrace manifest file called `runtime-config-dyntrace.yml`, using the code below as a template to get started.
   <pre>releases:
   \- {name: dynatrace-oneagent, <strong>version</strong>: 0.3.2}<br>
   addons:
@@ -20,10 +20,26 @@ Follow these steps to create the Dynatrace manifest for your deployment:
       include:
         stemcell:
         \- <strong>os</strong>: ubuntu-trusty
+      exclude:
+        jobs:
+        - {name: smoke-tests, release: cf}
+        - {name: push-apps-manager, release: push-apps-manager-release}
+        - {name: deploy-notifications, release: notifications}
+        - {name: deploy-notifications-ui, release: notifications-ui}
+        - {name: push-pivotal-account, release: pivotal-account}
+        - {name: deploy-autoscaling, release: cf-autoscaling}
+        - {name: register-broker, release: cf-autoscaling}
+        - {name: nfsbrokerpush, release: nfs-volume}
+        - {name: bootstrap, release: cf-mysql}
+        - {name: rejoin-unsafe, release: cf-mysql}
+        - {name: broker-registrar, release: cf-mysql}
+        - {name: deregister-and-purge-instances, release: cf-mysql}
+        - {name: smoke-tests, release: cf-mysql}
+        - {name: install-hwc-buildpack, release: hwc-buildpack}
       properties:
         dynatrace:
-          <strong>environmentid</strong>: abc12345
-          <strong>apitoken</strong>: bvQ0e--secret--2fEL9B
+          <strong>environmentid</strong>: &lt;environmentid&gt;
+          <strong>apitoken</strong>: &lt;token&gt;
           <strong>apiurl</strong>: https://{your-managed-cluster.com}/e/{environmentid}/api
           starthelper: 1
   \#optional: extra addon configuration for Windows cells
@@ -36,8 +52,8 @@ Follow these steps to create the Dynatrace manifest for your deployment:
         \- <strong>os</strong>: windows2012R2
       properties:
         dynatrace:
-          <strong>environmentid</strong>: abc12345
-          <strong>apitoken</strong>: bvQ0e--secret--2fEL9B
+          <strong>environmentid</strong>: &lt;environmentid&gt;
+          <strong>apitoken</strong>: &lt;token&gt;
           <strong>apiurl</strong>: https://{your-managed-cluster.com}/e/{environmentid}/api
   </pre>
 
@@ -45,20 +61,20 @@ Follow these steps to create the Dynatrace manifest for your deployment:
   * <code>releases: - version</code>: Specify the version number of your Dynatrace Full-Stack Add-on for PCF download from Pivotal Network.
   * <code>jobs: - name</code>: Do not change the name of this job. It must be `dynatrace-oneagent` for Linux VMs.
   * <code>include: stemcell - os</code>: Do not change the OS type.
-  * <code>environmentid</code>: Replace with your environmentId from the Dynatrace UI
-  * <code>apitoken</code>: Replace with your PaaS token from the Dynatrace UI
-  * <code>apiurl</code>: Replace with your Dynatrace Managed URL, including the environmentId. An example URL might look like the following `https://{your-managed-cluster.com}/e/{environmentid}/api`
+  * <code>environmentid</code>: Replace with your Dynatrace environment ID.
+  * <code>apitoken</code>: Replace with your PaaS token from the Dynatrace UI.
+  * <code>apiurl</code>: Replace with your Dynatrace Managed URL, including the environment ID. An example URL might look like the following `https://{your-managed-cluster.com}/e/{environmentid}/api`
 
 3. Optional: The add-on supports additional configuration properties:
   * <code>sslmode</code>: Set to `all` if you want to accept all self-signed SSL certificates.
-  * <code>downloadurl</code> Specify a direct download URL for the Dynatrace OneAgent. If this propery is set, bosh will download the OneAgent from this location.
+  * <code>downloadurl</code> Specify a direct download URL for Dynatrace OneAgent. If this propery is set, BOSH will download OneAgent from this location.
   * <code>proxy</code>: Specify the proxy to be used for communication.
 
 4. If you also want to deploy Dynatrace to Windows Diego cells, please configure a second add-on section for the `dynatrace-oneagent-windows` job. The properties for `environmentid`, `apitoken`, and `apiurl` remain the same as with the normal Linux configuration.
-  * <code>jobs: - name</code>: For Windows cells it must be `dynatrace-oneagent-windows`.
-  * <code>include: stemcell - os</code>: For Windows cells it must be `windows2012R2`.
+  * <code>jobs: - name</code>: For Windows cells this must be `dynatrace-oneagent-windows`.
+  * <code>include: stemcell - os</code>: For Windows cells this must be `windows2012R2`.
 
-<p class="note"><strong>Note</strong>: To modify the configuration in an existing deployment, you must update the manifest file and redeploy.</p>
+<p class="note"><strong>Note</strong>: To modify the configuration of an existing deployment, you must update the manifest file and redeploy.</p>
 
 
 ##<a id="download-deploy"></a>Download and Deploy the Dynatrace Full-Stack Add-on for PCF
@@ -92,7 +108,7 @@ Logged in as 'director'
 7. Upload your release.
 <pre class="terminal">$ bosh upload release PATH-TO-BINARY/dynatrace-release.tar.gz</pre>
 
-8. Optionally, from the command line, confirm that the upload of the Dynatrace software binary completed. You should see the Dynatrace binary file.
+8. Optionally, from the command line, you can confirm that upload of the Dynatrace software binary is complete. You should see the Dynatrace binary file.
 <pre class="terminal">$ bosh releases</pre>
 
 9. Update your runtime configuration to include the Dynatrace Add-on for PCF.
