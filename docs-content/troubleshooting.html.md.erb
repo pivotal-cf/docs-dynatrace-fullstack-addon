@@ -30,9 +30,9 @@ This topic provides instructions to verify that Dynatrace OneAgent works with yo
 Running the errands for installing AppsManager fails.
 
 #### Explanation: Memory limit is too restrictive.
-As part of deploying AppsManager, a number of apps are deployed to the Elastic Runtime. Starting `p-invitations` app might fail due to restrictive memory limits (128M).
+As part of deploying AppsManager, a number of apps are deployed to the Elastic Runtime. Starting `p-invitations-*` and `apps-manager-js-*` apps might fail due to restrictive memory limits.
 
 #### Solution
-In the Dynatrace UI, go to **Settings** > **Monitoring overview** and select the **Process groups** tab. Search for the `p-invitations` process group and disable monitoring for these groups.
+In the Dynatrace UI, go to **Settings** > **Monitoring overview** and select the **Process groups** tab. Search for the `p-invitations` and `apps-manager-js` process groups disable monitoring for these groups.
 
-Re-run the deployment. Going forward, `p-invitations` will be disabled from monitoring.
+Re-run the deployment. Going forward, `p-invitations` and `apps-manager-js` will be disabled from monitoring.

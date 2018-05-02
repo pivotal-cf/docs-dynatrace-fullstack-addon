@@ -1,16 +1,14 @@
 ---
-title: Dynatrace Full-Stack Add-on for PCF (Beta)
+title: Dynatrace Full-Stack Add-on for PCF
 owner: Partners
 ---
-
-<p class="note"><strong>Note:</strong> The Dynatrace Full-Stack Add-on for PCF tile is currently in beta and is intended for evaluation and test purposes only.</p>
 
 This documentation describes the Dynatrace Full-Stack Add-on for Pivotal Cloud Foundry (PCF). The Dynatrace Full-Stack Add-on
 for PCF enables operators to roll out Dynatrace OneAgent to CF clusters and installed tiles for monitoring the platform and deployed apps.
 
 ## <a id='overview'></a>Overview
 
-Dynatrace Full-Stack Add-on for PCF enables monitoring of PCF components like PCF Elastic Runtime, PCF Runtime for Windows, and all apps deployed to PCF.
+Dynatrace Full-Stack Add-on for PCF enables monitoring of PCF components like Pivotal Elastic Runtime/Pivotal Application Service, Pivotal Application Service for Windows/PCF Runtime for Windows, Pivotal Container Service (PKS), and all apps deployed to PCF.
 After the Dynatrace Full-Stack Add-on for PCF is deployed to the platform, Dynatrace OneAgent automatically begins monitoring any deployed apps. Developers
 can use the Dynatrace web UI to get insights into the performance of their apps and microservices.
 
@@ -36,23 +34,23 @@ The following table provides version and version-support information about Dynat
     <th>Details</th>
     <tr>
         <td>Version</td>
-        <td>v0.3.4</td>
+        <td>v1.0.3</td>
     </tr>
     <tr>
         <td>Release date</td>
-        <td>January 18, 2018</td>
+        <td>May 2, 2018</td>
     </tr>
     <tr>
         <td>Software component version</td>
-        <td>v0.3.4</td>
+        <td>v1.0.3</td>
     </tr>
     <tr>
         <td>Compatible Ops Manager version(s)</td>
-        <td>v1.10.x, v1.11.x, v1.12.x, and v2.0.x</td>
+        <td>v1.10.x, v1.11.x, v1.12.x, v2.0.x, and v2.1.x</td>
     </tr>
     <tr>
         <td>Compatible Pivotal Application Service version(s)</td>
-        <td>v1.10.x, v1.11.x, v1.12.x, and v2.0.x</td>
+        <td>v1.10.x, v1.11.x, v1.12.x, v2.0.x, and v2.1.x</td>
     </tr>
 </table>
 
@@ -64,6 +62,7 @@ Dynatrace Full-Stack Add-on has the following requirements:
 + A Dynatrace monitoring environment
 + PCF operator administration rights
 + BOSH deployed through Ops Manager v1.10 or later
++ bosh2 cli
 
 ## <a id="feedback"></a>Feedback
 
