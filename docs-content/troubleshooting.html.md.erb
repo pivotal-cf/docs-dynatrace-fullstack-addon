@@ -36,3 +36,16 @@ As part of deploying AppsManager, a number of apps are deployed to the Elastic R
 In the Dynatrace UI, go to **Settings** > **Monitoring overview** and select the **Process groups** tab. Search for the `p-invitations` and `apps-manager-js` process groups disable monitoring for these groups.
 
 Re-run the deployment. Going forward, `p-invitations` and `apps-manager-js` will be disabled from monitoring.
+
+### <a id="dynatrace-post-installation-issues"></a>Applications not Monitored
+
+#### Symptom
+Dynatrace UI shows application process or processes for CloudFoundry Applications as requiring a restart for monitoring to be enabled after multiple application restarts.
+
+#### Explanation: Garden container Service Insights not turned on within Dynatrace.
+A feature toggle for Garden container support is present in the Dynatrace UI and is not enabled by default.
+
+#### Solution
+In the Dynatrace UI, go to **Settings** > **Monitored Technologies** and ensure that the Garden container Service Insights is toggled to on.
+
+Issue a `cf restart` to enable monitoring for that application.

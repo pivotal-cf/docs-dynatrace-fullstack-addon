@@ -10,51 +10,73 @@ This topic explains how to install and configure the Dynatrace Full-Stack Add-on
 Follow these steps to create the Dynatrace manifest for your deployment:
 
 1. Create a Dynatrace manifest file called `runtime-config-dynatrace.yml`, using the code below as a template to get started.
-  <pre>releases:
-  \- {name: dynatrace-oneagent, <strong>version</strong>: 0.3.4}<br>
+
+<pre>releases:
+  \- {name: dynatrace-oneagent, <strong>version</strong>: 1.0.4}<br>  
   addons:
   \- name: dynatrace-oneagent-addon
+    jobs:
+    \- <strong>name</strong>: dynatrace-oneagent
+      release: dynatrace-oneagent
+    include:
+      stemcell:
+      \- <strong>os</strong>: ubuntu-trusty
+    exclude:
       jobs:
-      \- <strong>name</strong>: dynatrace-oneagent
-        release: dynatrace-oneagent
-      include:
-        stemcell:
-        \- <strong>os</strong>: ubuntu-trusty
-      exclude:
-        jobs:
-        - {name: smoke-tests, release: cf}
-        - {name: push-apps-manager, release: push-apps-manager-release}
-        - {name: deploy-notifications, release: notifications}
-        - {name: deploy-notifications-ui, release: notifications-ui}
-        - {name: push-pivotal-account, release: pivotal-account}
-        - {name: deploy-autoscaling, release: cf-autoscaling}
-        - {name: register-broker, release: cf-autoscaling}
-        - {name: nfsbrokerpush, release: nfs-volume}
-        - {name: bootstrap, release: cf-mysql}
-        - {name: rejoin-unsafe, release: cf-mysql}
-        - {name: broker-registrar, release: cf-mysql}
-        - {name: deregister-and-purge-instances, release: cf-mysql}
-        - {name: smoke-tests, release: cf-mysql}
-        - {name: install-hwc-buildpack, release: hwc-buildpack}
-      properties:
-        dynatrace:
-          <strong>environmentid</strong>: &lt;environmentid&gt;
-          <strong>apitoken</strong>: &lt;token&gt;
-          <strong>apiurl</strong>: https://{your-managed-cluster.com}/e/{environmentid}/api
-  \#optional: extra addon configuration for Windows cells
+      - {name: smoke-tests, release: cf}
+      - {name: push-apps-manager, release: push-apps-manager-release}
+      - {name: deploy-notifications, release: notifications}
+      - {name: deploy-notifications-ui, release: notifications-ui}
+      - {name: push-pivotal-account, release: pivotal-account}
+      - {name: deploy-autoscaling, release: cf-autoscaling}
+      - {name: register-broker, release: cf-autoscaling}
+      - {name: nfsbrokerpush, release: nfs-volume}
+      - {name: bootstrap, release: cf-mysql}
+      - {name: rejoin-unsafe, release: cf-mysql}
+      - {name: broker-registrar, release: cf-mysql}
+      - {name: deregister-and-purge-instances, release: cf-mysql}
+      - {name: smoke-tests, release: cf-mysql}
+      - {name: install-hwc-buildpack, release: hwc-buildpack}
+    properties:
+      dynatrace:
+        <strong>environmentid</strong>: &lt;environmentid&gt;
+        <strong>apitoken</strong>: &lt;token&gt;
+        ###
+        # optional properties below
+        ###
+        # Replace with your Dynatrace Managed URL, including the environment ID.
+        # An example URL might look like the following
+        <strong>apiurl</strong>: https://{your-managed-cluster.com}/e/{environmentid}/api
+        # Set to 'all' if you want to accept all self-signed SSL certificates.
+        sslmode: all
+        # Specify a direct download URL for Dynatrace OneAgent.
+        # If this propery is set, BOSH will download OneAgent from this location.
+        downloadurl: https://direct-download-url-for-agent
+        # Specify the proxy to be used for communication.
+        proxy: https://your-proxy-url
+        # Specify in which hostgroup the VMs in this deployments belong
+        hostgroup: example_hostgroup
+        # Define host tags for the VMs in this deployment
+        hosttags: landscape=production team=my_team
+        # Define custom properties for the VMs in this deployment
+        hostprops: Department=Acceptance Stage=Sprint
+        # Enable cloud infrastructure monitoring mode.
+        # Set this to 1 to activate it
+        infraonly: 0<br>           
+  \# optional: extra addon configuration for Windows cells
   \- name: dynatrace-oneagent-windows-addon
-      jobs:
-      \- <strong>name</strong>: dynatrace-oneagent-windows
-        release: dynatrace-oneagent
-      include:
-        stemcell:
-        \- <strong>os</strong>: windows2012R2
-      properties:
-        dynatrace:
-          <strong>environmentid</strong>: &lt;environmentid&gt;
-          <strong>apitoken</strong>: &lt;token&gt;
-          <strong>apiurl</strong>: https://{your-managed-cluster.com}/e/{environmentid}/api
-  </pre>
+    jobs:
+    - name: dynatrace-oneagent-windows
+      release: dynatrace-oneagent
+    include:
+      stemcell:
+      \- <strong>os</strong>: windows2012R2
+    properties:
+      dynatrace:
+        <strong>environmentid</strong>: &lt;environmentid&gt;
+        <strong>apitoken</strong>: &lt;token&gt;
+        # All of the optional properties for the Linux addon shown above (for example, apiurl, hostgroup) can also be used here.
+    </pre>
 
 2. Replace the values listed in the template as follows:
   * <code>releases: - version</code>: Specify the version number of your Dynatrace Full-Stack Add-on for PCF download from Pivotal Network.
@@ -68,10 +90,14 @@ Follow these steps to create the Dynatrace manifest for your deployment:
   * <code>sslmode</code>: Set to `all` if you want to accept all self-signed SSL certificates.
   * <code>downloadurl</code> Specify a direct download URL for Dynatrace OneAgent. If this propery is set, BOSH will download OneAgent from this location.
   * <code>proxy</code>: Specify the proxy to be used for communication.
+  * <code>hostgroup</code>: Specify hostgroup for VMs in this deployment.
+  * <code>hosttags</code>: Specify host tags for VMs in this deployment.
+  * <code>hostprops</code>: Specify custom properties for VMs in this deployment.
+  * <code>infraonly</code>: Set to 1 to enable cloud infrastructure monitoring mode. Note: This disables all deep process monitoring.
 
 4. If you also want to deploy Dynatrace to Windows Diego cells, please configure a second add-on section for the `dynatrace-oneagent-windows` job. The properties for `environmentid`, `apitoken`, and `apiurl` remain the same as with the normal Linux configuration.
   * <code>jobs: - name</code>: For Windows cells this must be `dynatrace-oneagent-windows`.
-  * <code>include: stemcell - os</code>: For Windows cells this must be `windows2012R2`.
+  * <code>include: stemcell - os</code>: For Windows cells this must be `windows2012R2` and/or `windows2016`.
 
 <p class="note"><strong>Note</strong>: To modify the configuration of an existing deployment, you must update the manifest file and redeploy.</p>
 
@@ -96,20 +122,7 @@ After deploying Ops Manager, perform the following steps to download and deploy 
 $ cd PATH-TO-BINARY</pre>
 
 6. Log in to the BOSH director.
-  * **For Ops Manager v1.10 or earlier:**
-  <ol  type="i">
-    <li>
-      On the Ops Manager VM, target the internal IP address of your BOSH Director. When prompted, enter your BOSH Director credentials. To retrieve your BOSH Director credentials, navigate to Ops Manager, click the **Credentials** tab, and click **Link to Credential** next to **Director Credentials**.
-      <pre class="terminal">
-      $ bosh --ca-cert /var/tempest/workspaces/default/root\_ca\_certificate target YOUR-BOSH-DIRECTOR-INTERNAL-IP
-      Target set to 'p-bosh'
-      Your username: director
-      Enter password: ******************
-      Logged in as 'director'
-      </pre>
-    </li>
-  </ol>
-  * **For Ops Manager v.1.11 or later:**
+  * **For Ops Manager v1.11 or v1.12:**
   <ol type="i">
     <li>
       On the Ops Manager VM, create an alias in the BOSH CLI for your BOSH Director IP address. For example:
@@ -121,31 +134,43 @@ $ cd PATH-TO-BINARY</pre>
       <pre class="terminal">$ bosh2 -e my-env log-in</pre>
     </li>
   </ol>
+  * **For Ops Manager v2.0 or later:**
+  <ol type="i">
+    <li>
+      On the Ops Manager VM, create an alias in the BOSH CLI for your BOSH Director IP address. For example:
+      <pre class="terminal">$ bosh alias-env my-env -e 10.0.16.10</pre>
+    </li>
+    <li>
+      Log in to the BOSH Director, specifying the newly created alias. 
+      For example:
+      <pre class="terminal">$ bosh -e my-env log-in</pre>
+    </li>
+  </ol>
 
 7. Upload your release.
-  * **For Ops Manager v1.10 or earlier:**
-<pre class="terminal">$ bosh upload release PATH-TO-BINARY/dynatrace-release.tar.gz</pre>
-  * **For Ops Manager v1.11 or later:**
-<pre class="terminal">$ bosh2 -e my-env upload-release PATH-TO-BINARY/dynatrace-release.tar.gz</pre>
+  * **For Ops Manager v1.11 or v1.12:**
+  <pre class="terminal">$ bosh2 -e my-env upload-release PATH-TO-BINARY/dynatrace-release.tar.gz</pre>
+  * **For Ops Manager v2.0 or later:**
+  <pre class="terminal">$ bosh -e my-env upload-release PATH-TO-BINARY/dynatrace-release.tar.gz</pre>
 
 8. Optionally, from the command line, you can confirm that upload of the Dynatrace software binary is complete. You should see the Dynatrace binary file.
-  * **For Ops Manager v1.10 or earlier:**
-<pre class="terminal">$ bosh releases</pre>
-  * **For Ops Manager v1.11 or later:**
-<pre class="terminal">$ bosh2 -e my-env releases</pre>
+  * **For Ops Manager v1.11 or v1.12:**
+  <pre class="terminal">$ bosh2 -e my-env releases</pre>
+  * **For Ops Manager v2.0 or later:**
+  <pre class="terminal">$ bosh -e my-env releases</pre>
 
 9. Update your runtime configuration to include the Dynatrace Add-on for PCF.
 <p class="note"><strong>Note</strong>: If you installed other BOSH add-ons, you must merge the Dynatrace manifest into your existing add-on manifest. Append the contents of <code>runtime-config-dynatrace.yml</code> to your existing add-on YML file.</p>
-  * **For Ops Manager v1.10 or earlier:**
-<pre class="terminal">$ bosh update runtime-config PATH/runtime-config-dynatrace.yml</pre>
-  * **For Ops Manager v1.11 or later:**
-<pre class="terminal">$ bosh2 -e my-env update-runtime-config PATH/runtime-config-dynatrace.yml</pre>
+  * **For Ops Manager v1.11 or v1.12:**
+  <pre class="terminal">$ bosh2 -e my-env update-runtime-config PATH/runtime-config-dynatrace.yml</pre>
+  * **For Ops Manager v2.0 or later:**
+  <pre class="terminal">$ bosh -e my-env update-runtime-config PATH/runtime-config-dynatrace.yml</pre>
 
 10. Verify your runtime configuration changes match what you specified in the Dynatrace manifest file.
-  * **For Ops Manager v1.10 or earlier:**
-    <pre class="terminal">$ bosh runtime-config</pre>
-  * **For Ops Manager v1.11 or later:**
-    <pre class="terminal">$ bosh2 -e my-env runtime-config</pre>
+  * **For Ops Manager v1.11 or v1.12:**
+  <pre class="terminal">$ bosh2 -e my-env runtime-config</pre>
+  * **For Ops Manager v2.0 or later:**
+  <pre class="terminal">$ bosh -e my-env runtime-config</pre>
 
     For example: 
 
@@ -153,7 +178,7 @@ $ cd PATH-TO-BINARY</pre>
     Acting as user 'admin' on 'micro'
 
     releases:
-    <span>-</span> {name: dynatrace-oneagent, version: 0.3.4}
+    <span>-</span> {name: dynatrace-oneagent, version: 1.0.4}
 
     addons:
     <span>-</span> name: dynatrace-oneagent-addon

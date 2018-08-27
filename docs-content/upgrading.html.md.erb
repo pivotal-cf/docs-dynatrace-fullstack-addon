@@ -13,13 +13,13 @@ This topic describes how to upgrade the Dynatrace Full-Stack Add-on for Pivotal 
    Follow the guidelines in the installation section.
 
 2. Retrieve the latest runtime config.
-  * **For Ops Manager v1.10 or earlier:** 
-  <pre class="terminal">
-    $ bosh runtime-config > PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
-  </pre>
-  * **For Ops Manager v1.11 or later:**
+  * **For Ops Manager v1.11 or v1.12:**
   <pre class="terminal">
     $ bosh2 -e my-env runtime-config > PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
+  </pre>
+  * **For Ops Manager v2.0.x or later:**
+  <pre class="terminal">
+    $ bosh -e my-env runtime-config > PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
   </pre>
 
 3. Change the release version.
@@ -30,13 +30,13 @@ releases:
 
 
 4. Update the runtime config.
-  * **For Ops Manager v1.10 or earlier:** 
-  <pre class="terminal">
-    $ bosh update runtime-config PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
-  </pre>
-  * **For Ops Manager v1.11 or later:**
+  * **For Ops Manager v1.11 or v1.12:**
   <pre class="terminal">
     $ bosh2 -e my-env update-runtime-config PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
+  </pre>  
+  * **For Ops Manager v2.0.x or later:**
+  <pre class="terminal">
+    $ bosh -e my-env update-runtime-config PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
   </pre>  
 
 5. Navigate to your **Installation Dashboard** in Ops Manager.
