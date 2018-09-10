@@ -7,7 +7,8 @@ owner: Partners
 
 This topic describes how to uninstall Dynatrace from your deployment of Pivotal Cloud Foundry (PCF).
 
-##<a id="uninstall"></a>Uninstall the Dynatrace Full-Stack Add-on for PCF
+
+## <a id="uninstall"></a> Uninstall the Dynatrace Full-Stack Add-on for PCF
 
 1. Retrieve the latest runtime config.
   * **For Ops Manager v1.11 or v1.12:**
@@ -19,8 +20,7 @@ This topic describes how to uninstall Dynatrace from your deployment of Pivotal 
     $ bosh -e my-env runtime-config > PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
   </pre>
 
-
-2. Remove the `addons` section(s) for Dynatrace.
+1. Remove the `addons` section(s) for Dynatrace.
   <pre>
 addons:
 \- name: dynatrace-oneagent-addon
@@ -29,7 +29,7 @@ addons:
 ...
   </pre>
 
-3. Update the runtime config.
+1. Update the runtime config.
   * **For Ops Manager v1.11 or v1.12:**
   <pre class="terminal">
     $ bosh2 -e my-env update-runtime-config PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
@@ -38,7 +38,7 @@ addons:
   <pre class="terminal">
     $ bosh -e my-env update-runtime-config PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
   </pre>  
- 
 
-4. Navigate to your **Installation Dashboard** in Ops Manager.
-5. Click **Apply Changes**.
+1. Navigate to your **Installation Dashboard** in Ops Manager.
+
+1. Click **Apply Changes**.
