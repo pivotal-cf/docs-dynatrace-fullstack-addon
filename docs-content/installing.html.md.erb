@@ -5,12 +5,12 @@ owner: Partners
 
 This topic explains how to install and configure the Dynatrace Full-Stack Add-on for Pivotal Cloud Foundry (PCF).
 
-##<a id='create-mfest'></a> Create the Dynatrace Manifest
+
+## <a id='create-mfest'></a> Create the Dynatrace Manifest
 
 Follow these steps to create the Dynatrace manifest for your deployment:
 
 1. Create a Dynatrace manifest file called `runtime-config-dynatrace.yml`, using the code below as a template to get started.
-
 <pre>releases:
   \- {name: dynatrace-oneagent, <strong>version</strong>: 1.0.4}<br>  
   addons:
@@ -78,50 +78,50 @@ Follow these steps to create the Dynatrace manifest for your deployment:
         # All of the optional properties for the Linux addon shown above (for example, apiurl, hostgroup) can also be used here.
     </pre>
 
-2. Replace the values listed in the template as follows:
-  * <code>releases: - version</code>: Specify the version number of your Dynatrace Full-Stack Add-on for PCF download from Pivotal Network.
-  * <code>jobs: - name</code>: Do not change the name of this job. It must be `dynatrace-oneagent` for Linux VMs.
-  * <code>include: stemcell - os</code>: Do not change the OS type.
-  * <code>environmentid</code>: Replace with your Dynatrace environment ID.
-  * <code>apitoken</code>: Replace with your PaaS token from the Dynatrace UI.
-  * <code>apiurl</code>: Replace with your Dynatrace Managed URL, including the environment ID. An example URL might look like the following `https://{your-managed-cluster.com}/e/{environmentid}/api`
+1. Replace the values listed in the template as follows:
+  * `releases: - version`: Specify the version number of your Dynatrace Full-Stack Add-on for PCF download from Pivotal Network.
+  * `jobs: - name`: Do not change the name of this job. It must be `dynatrace-oneagent` for Linux VMs.
+  * `include: stemcell - os<`: Do not change the OS type.
+  * `environmentid`: Replace with your Dynatrace environment ID.
+  * `apitoken`: Replace with your PaaS token from the Dynatrace UI.
+  * `apiurl`: Replace with your Dynatrace Managed URL, including the environment ID. An example URL might look like the following: `https://{your-managed-cluster.com}/e/{environmentid}/api`
 
-3. Optional: The add-on supports additional configuration properties:
-  * <code>sslmode</code>: Set to `all` if you want to accept all self-signed SSL certificates.
-  * <code>downloadurl</code> Specify a direct download URL for Dynatrace OneAgent. If this propery is set, BOSH will download OneAgent from this location.
-  * <code>proxy</code>: Specify the proxy to be used for communication.
-  * <code>hostgroup</code>: Specify hostgroup for VMs in this deployment.
-  * <code>hosttags</code>: Specify host tags for VMs in this deployment.
-  * <code>hostprops</code>: Specify custom properties for VMs in this deployment.
-  * <code>infraonly</code>: Set to 1 to enable cloud infrastructure monitoring mode. Note: This disables all deep process monitoring.
+1. (Optional) The add-on supports additional configuration properties:
+  * `sslmode`: Set to `all` if you want to accept all self-signed SSL certificates.
+  * `downloadurl`: Specify a direct download URL for Dynatrace OneAgent. If this propery is set, BOSH will download OneAgent from this location.
+  * `proxy`: Specify the proxy to be used for communication.
+  * `hostgroup`: Specify hostgroup for VMs in this deployment.
+  * `hosttags`: Specify host tags for VMs in this deployment.
+  * `hostprops`: Specify custom properties for VMs in this deployment.
+  * `infraonly`: Set to `1` to enable cloud infrastructure monitoring mode. This disables all deep process monitoring.
 
-4. If you also want to deploy Dynatrace to Windows Diego cells, please configure a second add-on section for the `dynatrace-oneagent-windows` job. The properties for `environmentid`, `apitoken`, and `apiurl` remain the same as with the normal Linux configuration.
-  * <code>jobs: - name</code>: For Windows cells this must be `dynatrace-oneagent-windows`.
-  * <code>include: stemcell - os</code>: For Windows cells this must be `windows2012R2` and/or `windows2016`.
+1. If you also want to deploy Dynatrace to Windows Diego cells, configure a second add-on section for the `dynatrace-oneagent-windows` job. The properties for `environmentid`, `apitoken`, and `apiurl` remain the same as with the normal Linux configuration.
+  * `jobs: - name`: For Windows cells, this must be `dynatrace-oneagent-windows`.
+  * `include: stemcell - os`: For Windows cells, this must be `windows2012R2` and/or `windows2016`.
 
-<p class="note"><strong>Note</strong>: To modify the configuration of an existing deployment, you must update the manifest file and redeploy.</p>
+<p class="note"><strong>Note:</strong> To modify the configuration of an existing deployment, you must update the manifest file and redeploy.</p>
 
 
-##<a id="download-deploy"></a>Download and Deploy the Dynatrace Full-Stack Add-on for PCF
+## <a id="download-deploy"></a> Download and Deploy the Dynatrace Full-Stack Add-on for PCF
 
-After deploying Ops Manager, perform the following steps to download and deploy the Dynatrace Full-Stack Add-on for PCF:
+After deploying Ops Manager, do the following to download and deploy the Dynatrace Full-Stack Add-on for PCF:
 
-1. Download the Dynatrace Full-Stack Add-on for PCF software binary from the [Pivotal Network](https://network.pivotal.io/products/dynatrace-fullstack-addon) to your local machine.
+1. Download the Dynatrace Full-Stack Add-on for PCF software binary from [Pivotal Network](https://network.pivotal.io/products/dynatrace-fullstack-addon) to your local machine.
 
-2. Copy the software binary to your Ops Manager instance.
+1. Copy the software binary to your Ops Manager instance.
 <pre class="terminal">$ scp -i PATH/TO/PRIVATE/KEY dynatrace-release.tar.gz ubuntu@YOUR-OPS-MANAGER-VM-IP:</pre>
 
-3. Copy the Dynatrace manifest file to your Ops Manager instance.
+1. Copy the Dynatrace manifest file to your Ops Manager instance.
 <pre class="terminal">$ scp -i PATH/TO/PRIVATE/KEY runtime-config-dynatrace.yml ubuntu@YOUR-OPS-MANAGER-VM-IP:</pre>
 
-4. SSH into Ops Manager.
+1. SSH into Ops Manager.
  <pre class="terminal">$ ssh -i PATH-TO-PRIVATE-KEY ubuntu@YOUR-OPS-MANAGER-VM-IP</pre>
 
-5. On the Ops Manager VM, navigate to the software binary location in your working directory.
+1. On the Ops Manager VM, navigate to the software binary location in your working directory.
 <pre class="terminal">
 $ cd PATH-TO-BINARY</pre>
 
-6. Log in to the BOSH director.
+1. Log in to the BOSH Director.
   * **For Ops Manager v1.11 or v1.12:**
   <ol type="i">
     <li>
@@ -147,33 +147,31 @@ $ cd PATH-TO-BINARY</pre>
     </li>
   </ol>
 
-7. Upload your release.
+1. Upload your release.
   * **For Ops Manager v1.11 or v1.12:**
   <pre class="terminal">$ bosh2 -e my-env upload-release PATH-TO-BINARY/dynatrace-release.tar.gz</pre>
   * **For Ops Manager v2.0 or later:**
   <pre class="terminal">$ bosh -e my-env upload-release PATH-TO-BINARY/dynatrace-release.tar.gz</pre>
 
-8. Optionally, from the command line, you can confirm that upload of the Dynatrace software binary is complete. You should see the Dynatrace binary file.
+1. (Optional) From the command line, you can confirm that upload of the Dynatrace software binary is complete. You should see the Dynatrace binary file.
   * **For Ops Manager v1.11 or v1.12:**
   <pre class="terminal">$ bosh2 -e my-env releases</pre>
   * **For Ops Manager v2.0 or later:**
   <pre class="terminal">$ bosh -e my-env releases</pre>
 
-9. Update your runtime configuration to include the Dynatrace Add-on for PCF.
-<p class="note"><strong>Note</strong>: If you installed other BOSH add-ons, you must merge the Dynatrace manifest into your existing add-on manifest. Append the contents of <code>runtime-config-dynatrace.yml</code> to your existing add-on YML file.</p>
+1. Update your runtime configuration to include the Dynatrace Add-on for PCF.
+  <p class="note"><strong>Note</strong>: If you installed other BOSH add-ons, you must merge the Dynatrace manifest into your existing add-on manifest. Append the contents of <code>runtime-config-dynatrace.yml</code> to your existing add-on YML file.</p>
   * **For Ops Manager v1.11 or v1.12:**
   <pre class="terminal">$ bosh2 -e my-env update-runtime-config PATH/runtime-config-dynatrace.yml</pre>
   * **For Ops Manager v2.0 or later:**
   <pre class="terminal">$ bosh -e my-env update-runtime-config PATH/runtime-config-dynatrace.yml</pre>
 
-10. Verify your runtime configuration changes match what you specified in the Dynatrace manifest file.
+1. Verify your runtime configuration changes match what you specified in the Dynatrace manifest file.
   * **For Ops Manager v1.11 or v1.12:**
   <pre class="terminal">$ bosh2 -e my-env runtime-config</pre>
   * **For Ops Manager v2.0 or later:**
   <pre class="terminal">$ bosh -e my-env runtime-config</pre>
-
     For example: 
-
     <pre class="terminal">
     Acting as user 'admin' on 'micro'
 
@@ -188,6 +186,6 @@ $ cd PATH-TO-BINARY</pre>
     ...
     </pre>
 
-11. Navigate to your **Installation Dashboard** in Ops Manager.
+1. Navigate to your **Installation Dashboard** in Ops Manager.
 
-12. Click **Apply Changes**.
+1. Click **Apply Changes**.
