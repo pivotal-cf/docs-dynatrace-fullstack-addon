@@ -5,14 +5,14 @@ owner: Partners
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to upgrade the Dynatrace Full-Stack Add-on for Pivotal Cloud Foundry (PCF).
+This topic describes how to upgrade the Dynatrace Full-Stack Add-On for Pivotal Cloud Foundry (PCF).
 
-##<a id="upgrading"></a>Upgrading the Dynatrace Full-Stack Add-on for PCF
 
-1. Upload the new Dynatrace Full-Stack Add-on for PCF release to BOSH director.
-   Follow the guidelines in the installation section.
+## <a id="upgrading"></a> Upgrading the Dynatrace Full-Stack Add-On for PCF
 
-2. Retrieve the latest runtime config.
+1. Upload the new Dynatrace Full-Stack Add-On for PCF release to BOSH Director. Follow the guidelines in the installation section.
+
+1. Retrieve the latest runtime config.
   * **For Ops Manager v1.11 or v1.12:**
   <pre class="terminal">
     $ bosh2 -e my-env runtime-config > PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
@@ -22,14 +22,13 @@ This topic describes how to upgrade the Dynatrace Full-Stack Add-on for Pivotal 
     $ bosh -e my-env runtime-config > PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
   </pre>
 
-3. Change the release version.
+1. Change the release version.
   <pre>
 releases:
 \- {name: dynatrace-oneagent, version: NEW\_VERSION}
   </pre>
 
-
-4. Update the runtime config.
+1. Update the runtime config.
   * **For Ops Manager v1.11 or v1.12:**
   <pre class="terminal">
     $ bosh2 -e my-env update-runtime-config PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
@@ -39,5 +38,6 @@ releases:
     $ bosh -e my-env update-runtime-config PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
   </pre>  
 
-5. Navigate to your **Installation Dashboard** in Ops Manager.
-6. Click **Apply Changes**.
+1. Navigate to your **Installation Dashboard** in Ops Manager.
+
+1. Click **Apply Changes**.
