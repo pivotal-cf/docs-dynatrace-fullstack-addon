@@ -6,6 +6,21 @@ owner: Partners
 Here are the release notes for the Dynatrace Full-Stack Add-on for Pivotal Cloud Foundry (PCF).
 
 
+## <a id="ver"></a> v1.2.0
+
+**Release Date:** March 7, 2019
+
+Features included in this release:
+
+* Optionally verify the agent download. It is off by default, and it can be activated by setting the Dynatrace property `validatedownload` to true in the runtime config.
+* A custom property has been added on host-level, named BOSHReleaseVersion, that includes the version of Dynatrace BOSH Release installed.
+
+Fixed with this release:
+
+* Windows job has been refactored. Now if there are issues with the agent download or installation then the deployment fails.
+* Agent logs and config were deleted when draining the Linux OneAgent job. They are now left in place. Also the logs from the job itself.
+
+
 ## <a id="ver"></a> v1.1.0
 
 **Release Date:** January 22, 2019
