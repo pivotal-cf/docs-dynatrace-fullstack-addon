@@ -48,7 +48,7 @@ Re-run the deployment. Going forward, `p-invitations` and `apps-manager-js` will
 
 #### Symptom
 
-Dynatrace UI shows application process or processes for CloudFoundry Applications as requiring a restart for monitoring to be enabled after multiple application restarts.
+Dynatrace UI shows application process or processes for pushed CloudFoundry Applications as requiring a restart for monitoring to be enabled after multiple application restarts.
 
 #### Explanation
 
@@ -58,6 +58,24 @@ A feature toggle for Garden container support is present in the Dynatrace UI and
 
 #### Solution
 
-In the Dynatrace UI, go to **Settings > Monitored Technologies** and ensure that the Garden container Service Insights is toggled to on.
+In the Dynatrace UI, go to **Settings > Processes and Containers > Container Monitoring** and ensure that the Garden container Service Insights is toggled to on.
+
+Run `cf restart` to enable monitoring for that application.
+
+###  CloudFoundry System Processes Not Monitored
+
+#### Symptom
+
+Dynatrace UI shows application process or processes for CloudFoundry System Processes (i.e. gorouter, auctioneer, etc) as requiring a restart for monitoring to be enabled after multiple application restarts.
+
+#### Explanation
+
+BOSH Process Manager (BPM) container Service Insights is not turned on within Dynatrace. With PAS 2.3+, many CloudFoundry processes are utilizing BPM.
+
+A feature toggle for BOSH Process Manager (BPM) container support is present in the Dynatrace UI and is not enabled by default.
+
+#### Solution
+
+In the Dynatrace UI, go to **Settings > Processes and Containers > Container Monitoring** and ensure that the BOSH Process Manager (BPM) container Service Insights is toggled to on.
 
 Run `cf restart` to enable monitoring for that application.
