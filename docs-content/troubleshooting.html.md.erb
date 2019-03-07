@@ -7,45 +7,57 @@ owner: Partners
 
 This topic provides instructions to verify that Dynatrace OneAgent works with your Pivotal Cloud Foundry (PCF) deployment.
 
-## <a id="verify"></a>Verify Your Dynatrace Add-on for PCF Installation
+
+## <a id="verify"></a> Verify Your Dynatrace Add-on for PCF Installation
 
 1. Check your Dynatrace environment for new monitored hosts.
 
-2. [BOSH ssh](https://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html#bosh-ssh) into one of the VMs in your deployment.
+1. [BOSH SSH](https://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html#bosh-ssh) into one of the VMs in your deployment.
 
-3. Run `sudo su -` to enter the root environment with root privileges.
+1. Run `sudo su -` to enter the root environment with root privileges.
 
-4. Run `monit summary`. Look for the following processes in the output:
+1. Run `monit summary`. Look for the following processes in the output:
 
     <pre class="terminal">The Monit daemon 5.2.5 uptime: 8d 11h 33m
     Process 'dynatrace-oneagent'        running</pre>
 
-5. If `monit summary` does not list `dynatrace-oneagent`, check `/var/vcap/sys/log/dynatrace-oneagent/` logs for errors.
+1. If `monit summary` does not list `dynatrace-oneagent`, check `/var/vcap/sys/log/dynatrace-oneagent/` logs for errors.
 
-## <a id='known-limitations'></a>Known Limitations
 
-### <a id="dynatrace-installation-issues"></a>p-invitations App Does Not Start
+## <a id='known-limitations'></a> Known Limitations
+
+### <a id="dynatrace-installation-issues"></a> p-invitations App Does Not Start
 
 #### Symptom
+
 Running the errands for installing AppsManager fails.
 
-#### Explanation: Memory limit is too restrictive.
+#### Explanation
+
+The memory limit is too restrictive.
+
 As part of deploying AppsManager, a number of apps are deployed to the Elastic Runtime. Starting `p-invitations-*` and `apps-manager-js-*` apps might fail due to restrictive memory limits.
 
 #### Solution
+
 In the Dynatrace UI, go to **Settings** > **Monitoring overview** and select the **Process groups** tab. Search for the `p-invitations` and `apps-manager-js` process groups disable monitoring for these groups.
 
 Re-run the deployment. Going forward, `p-invitations` and `apps-manager-js` will be disabled from monitoring.
 
-### <a id="dynatrace-post-installation-issues"></a>Applications not Monitored
+### <a id="dynatrace-post-installation-issues"></a> Applications Not Monitored
 
 #### Symptom
+
 Dynatrace UI shows application process or processes for CloudFoundry Applications as requiring a restart for monitoring to be enabled after multiple application restarts.
 
-#### Explanation: Garden container Service Insights not turned on within Dynatrace.
+#### Explanation
+
+Garden container Service Insights is not turned on within Dynatrace.
+
 A feature toggle for Garden container support is present in the Dynatrace UI and is not enabled by default.
 
 #### Solution
-In the Dynatrace UI, go to **Settings** > **Monitored Technologies** and ensure that the Garden container Service Insights is toggled to on.
 
-Issue a `cf restart` to enable monitoring for that application.
+In the Dynatrace UI, go to **Settings > Monitored Technologies** and ensure that the Garden container Service Insights is toggled to on.
+
+Run `cf restart` to enable monitoring for that application.
