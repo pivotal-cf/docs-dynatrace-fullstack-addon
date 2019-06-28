@@ -4,12 +4,12 @@ owner: Partners
 ---
 
 This documentation describes the Dynatrace Full-Stack Add-on for Pivotal Cloud Foundry (PCF). The Dynatrace Full-Stack Add-on
-for PCF enables operators to roll out Dynatrace OneAgent to CF clusters and installed tiles for monitoring the platform and deployed apps.
+for PCF enables operators to roll out Dynatrace OneAgent to both Pivotal Application Service (PAS) and Pivotal Container Service (PKS) clusters and installed tiles for monitoring the platform and deployed apps.
 
 
 ## <a id='overview'></a> Overview
 
-Dynatrace Full-Stack Add-on for PCF enables monitoring of PCF components like Pivotal Elastic Runtime/Pivotal Application Service, Pivotal Application Service for Windows/PCF Runtime for Windows, Pivotal Container Service (PKS), and all apps deployed to PCF. After the Dynatrace Full-Stack Add-on for PCF is deployed to the platform, Dynatrace OneAgent automatically begins monitoring any deployed apps. Developers can use the Dynatrace web UI to get insights into the performance of their apps and microservices.
+Dynatrace Full-Stack Add-on for PCF enables monitoring of PCF components like Pivotal Elastic Runtime/Pivotal Application Service (PAS), Pivotal Application Service for Windows/PCF Runtime for Windows, Pivotal Container Service (PKS), and all applications deployed to PCF (PAS and/or PKS). After the Dynatrace Full-Stack Add-on for PCF is deployed to the platform, Dynatrace OneAgent automatically begins monitoring any deployed apps. Developers can use the Dynatrace web UI to get insights into the performance of their apps and microservices.
 
 
 ## <a id='features'></a> Key Features
@@ -17,8 +17,8 @@ Dynatrace Full-Stack Add-on for PCF enables monitoring of PCF components like Pi
 Dynatrace Full-Stack Add-on includes the following key features:
 
 * Monitoring of PCF components
-* Automatic monitoring of deployed apps
-* Automatic distributed tracing of microservices
+* Automatic monitoring of deployed apps across both PAS and PKS
+* Automatic distributed tracing of microservices across both PAS and PKS
 * Automatic discovery of deployment dependencies and communication behavior
 * Automatic root-cause analysis and AI-based problem detection
 
@@ -49,6 +49,10 @@ The following table provides version and version-support information about Dynat
     <tr>
         <td>Compatible Pivotal Application Service version(s)</td>
         <td>v2.2.x, v2.3.x, v2.4.x, and v2.5.x</td>
+    </tr>
+    <tr>
+        <td>Compatible Pivotal Container Service version(s)</td>
+        <td>v1.4.x, v1.3.x, v1.2.x</td>
     </tr>
 </table>
 

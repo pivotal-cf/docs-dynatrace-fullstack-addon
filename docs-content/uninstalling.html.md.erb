@@ -11,11 +11,6 @@ This topic describes how to uninstall Dynatrace from your deployment of Pivotal 
 ## <a id="uninstall"></a> Uninstall the Dynatrace Full-Stack Add-on for PCF
 
 1. Retrieve the latest runtime config.
-  * **For Ops Manager v1.11 or v1.12:**
-  <pre class="terminal">
-    $ bosh2 -e my-env runtime-config > PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
-  </pre>
-  * **For Ops Manager v2.0 or later:**
   <pre class="terminal">
     $ bosh -e my-env runtime-config > PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
   </pre>
@@ -30,11 +25,6 @@ addons:
   </pre>
 
 1. Update the runtime config.
-  * **For Ops Manager v1.11 or v1.12:**
-  <pre class="terminal">
-    $ bosh2 -e my-env update-runtime-config PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
-  </pre> 
-  * **For Ops Manager v2.0 or later:**
   <pre class="terminal">
     $ bosh -e my-env update-runtime-config PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
   </pre>  

@@ -13,27 +13,18 @@ This topic describes how to upgrade the Dynatrace Full-Stack Add-On for Pivotal 
 1. Upload the new Dynatrace Full-Stack Add-On for PCF release to BOSH Director. Follow the guidelines in the installation section.
 
 1. Retrieve the latest runtime config.
-  * **For Ops Manager v1.11 or v1.12:**
-  <pre class="terminal">
-    $ bosh2 -e my-env runtime-config > PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
-  </pre>
-  * **For Ops Manager v2.0.x or later:**
   <pre class="terminal">
     $ bosh -e my-env runtime-config > PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
   </pre>
 
 1. Change the release version.
-  <pre>
+
+```
 releases:
-\- {name: dynatrace-oneagent, version: NEW\_VERSION}
-  </pre>
+- {name: dynatrace-oneagent, version: NEW_VERSION}
+```
 
 1. Update the runtime config.
-  * **For Ops Manager v1.11 or v1.12:**
-  <pre class="terminal">
-    $ bosh2 -e my-env update-runtime-config PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
-  </pre>  
-  * **For Ops Manager v2.0.x or later:**
   <pre class="terminal">
     $ bosh -e my-env update-runtime-config PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
   </pre>  
