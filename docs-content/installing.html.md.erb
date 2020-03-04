@@ -1,11 +1,11 @@
 ---
-title: Installing and Configuring Dynatrace Full-Stack Add-on for Pivotal Platform
+title: Installing and Configuring Dynatrace Full-Stack Add-on for VMware Tanzu
 owner: Partners
 ---
 
-This topic explains how to install and configure the Dynatrace Full-Stack Add-on for Pivotal Platform.
+This topic explains how to install and configure the Dynatrace Full-Stack Add-on for VMware Tanzu.
 
-<p class="note"><strong>Note:</strong> The syntax for the Dynatrace manifest is identical for PAS and PKS. As such, if no detailed include/exclude rules are used the same manifest can be utilized for both PAS and PKS. In deployments utilizing Pivotal Operations Manager (OpsMan) 2.5 or greater where both PAS and PKS are configured by the same OpsMan instance, this means both PAS and PKS can be monitored simulatenously via a single deployment of the Dynatrace Full-Stack Add-on.</p>
+<p class="note"><strong>Note:</strong> The syntax for the Dynatrace manifest is identical for TAS and PKS. As such, if no detailed include/exclude rules are used the same manifest can be utilized for both TAS and PKS. In deployments utilizing Pivotal Operations Manager (OpsMan) 2.5 or greater where both TAS and PKS are configured by the same OpsMan instance, this means both TAS and PKS can be monitored simulatenously via a single deployment of the Dynatrace Full-Stack Add-on.</p>
 
 ## <a id='create-mfest'></a> Create the Dynatrace Manifest
 
@@ -87,7 +87,7 @@ addons:
 ```
 
 2. Replace the values listed in the template as follows:
-  * `releases: - version`: Specify the version number of your Dynatrace Full-Stack Add-on for Pivotal Platform download from Pivotal Network.
+  * `releases: - version`: Specify the version number of your Dynatrace Full-Stack Add-on for VMware Tanzu download from Pivotal Network.
   * `jobs: - name`: Do not change the name of this job. It must be `dynatrace-oneagent` for Linux VMs.
   * `include: stemcell - os<`: Do not change the OS type.
   * `environmentid`: Replace with your Dynatrace environment ID.
@@ -110,11 +110,11 @@ addons:
 
 <p class="note"><strong>Note:</strong> To modify the configuration of an existing deployment, you must update the manifest file and redeploy.</p>
 
-## <a id="download-deploy"></a> Download and Deploy the Dynatrace Full-Stack Add-on for Pivotal Platform
+## <a id="download-deploy"></a> Download and Deploy the Dynatrace Full-Stack Add-on for VMware Tanzu
 
-After deploying Ops Manager, do the following to download and deploy the Dynatrace Full-Stack Add-on for Pivotal Platform:
+After deploying Ops Manager, do the following to download and deploy the Dynatrace Full-Stack Add-on for VMware Tanzu:
 
-1. Download the Dynatrace Full-Stack Add-on for Pivotal Platform software binary from [Pivotal Network](https://network.pivotal.io/products/dynatrace-fullstack-addon) to your local machine.
+1. Download the Dynatrace Full-Stack Add-on for VMware Tanzu software binary from [Pivotal Network](https://network.pivotal.io/products/dynatrace-fullstack-addon) to your local machine.
 
 1. Copy the software binary to your Ops Manager instance.
 <pre class="terminal">$ scp -i PATH/TO/PRIVATE/KEY dynatrace-release.tar.gz ubuntu@YOUR-OPS-MANAGER-VM-IP:</pre>
@@ -148,7 +148,7 @@ $ cd PATH-TO-BINARY</pre>
 1. (Optional) From the command line, you can confirm that upload of the Dynatrace software binary is complete. You should see the Dynatrace binary file.
   <pre class="terminal">$ bosh -e my-env releases</pre>
 
-1. Update your runtime configuration to include the Dynatrace Add-on for Pivotal Platform.
+1. Update your runtime configuration to include the Dynatrace Add-on for VMware Tanzu.
   <p class="note"><strong>Note</strong>: If you installed other BOSH add-ons, you must merge the Dynatrace manifest into your existing add-on manifest. Append the contents of <code>runtime-config-dynatrace.yml</code> to your existing add-on YML file.</p>
   <pre class="terminal">$ bosh -e my-env update-runtime-config PATH/runtime-config-dynatrace.yml</pre>
 
@@ -173,7 +173,7 @@ $ cd PATH-TO-BINARY</pre>
 
 ## <a id='advanced-configuration'></a> Advanced Configuration
 
-This section explains advanced configuration of the Dynatrace Full-Stack Add-on for Pivotal Platform.
+This section explains advanced configuration of the Dynatrace Full-Stack Add-on for VMware Tanzu.
 
 ## <a id='host-groups'></a> About the Hostgroup Property
 
@@ -230,7 +230,7 @@ addons:
       hostgroup: pks_cluster_xyz
 ```
 
-1. Update your runtime configuration to include the Dynatrace Add-on for Pivotal Platform.
+1. Update your runtime configuration to include the Dynatrace Add-on for VMware Tanzu.
   <pre class="terminal">$ bosh -e my-env update-runtime-config PATH/runtime-config-dynatrace.yml</pre>
 
 1. Navigate to your **Installation Dashboard** in Ops Manager.

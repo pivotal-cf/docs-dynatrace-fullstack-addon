@@ -1,14 +1,14 @@
 ---
-title: Troubleshooting the Dynatrace Full-Stack Add-on for Pivotal Platform
+title: Troubleshooting the Dynatrace Full-Stack Add-on for VMware Tanzu
 owner: Partners
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic provides instructions to verify that Dynatrace OneAgent works with your Pivotal Platform deployment.
+This topic provides instructions to verify that Dynatrace OneAgent works with your VMware Tanzu deployment.
 
 
-## <a id="verify"></a> Verify Your Dynatrace Add-on for Pivotal Platform Installation
+## <a id="verify"></a> Verify Your Dynatrace Add-on for VMware Tanzu Installation
 
 1. Check your Dynatrace environment for new monitored hosts.
 
@@ -70,7 +70,7 @@ Dynatrace UI shows application process or processes for CloudFoundry System Proc
 
 #### Explanation
 
-BOSH Process Manager (BPM) container Service Insights is not turned on within Dynatrace. With PAS 2.3+, many CloudFoundry processes are utilizing BPM.
+BOSH Process Manager (BPM) container Service Insights is not turned on within Dynatrace. With TAS 2.3+, many CloudFoundry processes are utilizing BPM.
 
 A feature toggle for BOSH Process Manager (BPM) container support is present in the Dynatrace UI and is not enabled by default.
 
