@@ -15,84 +15,83 @@ Follow these steps to create the Dynatrace manifest for your deployment:
 
 ```
 releases:
-- {name: dynatrace-oneagent, version: 1.2.1}  
+- name: dynatrace-oneagent
+  version: 1.3.2
+
 addons:
 - name: dynatrace-oneagent-addon
   jobs:
   - name: dynatrace-oneagent
     release: dynatrace-oneagent
+    properties:
+      dynatrace:
+        environmentid: <environmentId>
+        apitoken: <paas-token>
+        ###
+        # optional properties below
+        ###
+        # Replace with your Dynatrace Managed URL, including the environment ID.
+        # An example URL might look like the following
+        apiurl: https://{your-managed-cluster.com}/e/{environmentid}/api
+        # Set to 'all' if you want to accept all self-signed SSL certificates.
+        sslmode: all
+        # Specify a direct download URL for Dynatrace OneAgent.
+        # If this propery is set, BOSH will download OneAgent from this location.
+        downloadurl: https://direct-download-url-for-agent
+        # Specify the proxy to be used for communication.
+        proxy: https://your-proxy-url
+        # Specify in which hostgroup the VMs in this deployments belong
+        hostgroup: example_hostgroup
+        # Define host tags for the VMs in this deployment
+        hosttags: landscape=production team=my_team
+        # Define custom properties for the VMs in this deployment
+        hostprops: Department=Acceptance Stage=Sprint
+        # Enable cloud infrastructure monitoring mode.
+        # Set this to 1 to activate it
+        infraonly: 0
+        # Enable validation of the download via certificate
+        # Set this to true to active it
+        validatedownload: false
+        # Hand over any installer argument
+        # Use either this OR the hostgroup, hosttags, infraonly, proxy properties.
+        # Usage of 'installerargs' will overwrite the others!
+        # Usage of USER= and GROUP= arguments will change user and group for plugin and network agents
+        installerargs: USER=vcap GROUP=vcap
   include:
+    deployments:
+      - name-of-your-deployment
     stemcell:
-    - os: ubuntu-trusty
-    - os: ubuntu-xenial
+      - os: ubuntu-xenial
   exclude:
     lifecycle: errand
-    jobs:
-    - {name: smoke-tests, release: cf}
-    - {name: push-apps-manager, release: push-apps-manager-release}
-    - {name: deploy-notifications, release: notifications}
-    - {name: deploy-notifications-ui, release: notifications-ui}
-    - {name: push-pivotal-account, release: pivotal-account}
-    - {name: deploy-autoscaling, release: cf-autoscaling}
-    - {name: register-broker, release: cf-autoscaling}
-    - {name: nfsbrokerpush, release: nfs-volume}
-    - {name: bootstrap, release: cf-mysql}
-    - {name: rejoin-unsafe, release: cf-mysql}
-    - {name: broker-registrar, release: cf-mysql}
-    - {name: deregister-and-purge-instances, release: cf-mysql}
-    - {name: smoke-tests, release: cf-mysql}
-    - {name: install-hwc-buildpack, release: hwc-buildpack}
-  properties:
-    dynatrace:
-      environmentid: <environmentid>
-      apitoken: <token>
-      ###
-      # optional properties below
-      ###
-      # Replace with your Dynatrace Managed URL, including the environment ID.
-      # An example URL might look like the following
-      apiurl: https://{your-managed-cluster.com}/e/{environmentid}/api
-      # Set to 'all' if you want to accept all self-signed SSL certificates.
-      sslmode: all
-      # Specify a direct download URL for Dynatrace OneAgent.
-      # If this propery is set, BOSH will download OneAgent from this location.
-      downloadurl: https://direct-download-url-for-agent
-      # Specify the proxy to be used for communication.
-      proxy: https://your-proxy-url
-      # Specify in which hostgroup the VMs in this deployments belong, see advanced configuration page for more details
-      hostgroup: example_hostgroup
-      # Define host tags for the VMs in this deployment
-      hosttags: landscape=production team=my_team
-      # Define custom properties for the VMs in this deployment
-      hostprops: Department=Acceptance Stage=Sprint
-      # Enable cloud infrastructure monitoring mode.
-      # Set this to 1 to activate it
-      infraonly: 0
-      # Enable validation of the download via certificate
-      # Set this to true to active it
-      validatedownload: false         
+
+
 # optional: extra addon configuration for Windows cells
 - name: dynatrace-oneagent-windows-addon
   jobs:
   - name: dynatrace-oneagent-windows
     release: dynatrace-oneagent
-  include:
+    properties:
+      dynatrace:
+        environmentid: <environmentId>
+        apitoken: <paas-token>
+        # All of the optional properties for the Linux addon shown above (for example, apiurl, hostgroup) can also be used here.  include:
+    deployments:
+      - name-of-your-deployment
     stemcell:
-    - os: windows2012R2
-  properties:
-    dynatrace:
-      environmentid: <environmentid>
-      apitoken: <token>
-      # All of the optional properties for the Linux addon shown above (for example, apiurl, hostgroup) can also be used here.
+      - os: windows1803
+  exclude:
+    lifecycle: errand
 ```
+
 
 2. Replace the values listed in the template as follows:
   * `releases: - version`: Specify the version number of your Dynatrace Full-Stack Add-on for VMware Tanzu download from Pivotal Network.
   * `jobs: - name`: Do not change the name of this job. It must be `dynatrace-oneagent` for Linux VMs.
-  * `include: stemcell - os<`: Do not change the OS type.
+  * `include: stemcell - os<`: Change to the OS type of your linux stemcell(s).
   * `environmentid`: Replace with your Dynatrace environment ID.
   * `apitoken`: Replace with your PaaS token from the Dynatrace UI.
-  * `apiurl`: Replace with your Dynatrace Managed URL, including the environment ID. An example URL might look like the following: `https://{your-managed-cluster.com}/e/{environmentid}/api`
+  * `apiurl`: If using Dynatrace Managed, replace with your Dynatrace Managed URL, including the environment ID. An example URL might look like the following: `https://{your-managed-cluster.com}/e/{environmentid}/api`
 
 3. (Optional) The add-on supports additional configuration properties:
   * `sslmode`: Set to `all` if you want to accept all self-signed SSL certificates.
@@ -103,10 +102,11 @@ addons:
   * `hostprops`: Specify custom properties for VMs in this deployment.
   * `infraonly`: Set to `1` to enable cloud infrastructure monitoring mode. This disables all deep process monitoring.
   * `validatedownload`: Set to `true` to enable validation of the download via certificate.
+  * `installerargs`: Supports Dynatrace [installer arguments](https://www.dynatrace.com/support/help/technology-support/operating-systems/linux/installation/customize-oneagent-installation-on-linux/), suggested values include setting USER=vcap and GROUP=vcap to allow Dynatrace plugins to monitor HAProxy. Note, setting hostgroup, hosttags, infraonly, proxy properties here will override settings deployed elsewhere in runtime config.
 
 4. If you also want to deploy Dynatrace to Windows Diego cells, configure a second add-on section for the `dynatrace-oneagent-windows` job. The properties for `environmentid`, `apitoken`, and `apiurl` remain the same as with the normal Linux configuration.
   * `jobs: - name`: For Windows cells, this must be `dynatrace-oneagent-windows`.
-  * `include: stemcell - os`: For Windows cells, this must be `windows2012R2` and/or `windows2016`.
+  * `include: stemcell - os`: Change to the OS type of your Windows stemcell(s).
 
 <p class="note"><strong>Note:</strong> To modify the configuration of an existing deployment, you must update the manifest file and redeploy.</p>
 
@@ -158,7 +158,7 @@ $ cd PATH-TO-BINARY</pre>
     <pre class="terminal">
     Acting as user 'admin' on 'micro'
     releases:
-    <span>-</span> {name: dynatrace-oneagent, version: 1.2.1}
+    <span>-</span> {name: dynatrace-oneagent, version: 1.3.2}
     addons:
     <span>-</span> name: dynatrace-oneagent-addon
       jobs:
@@ -207,7 +207,7 @@ An example use of the hostgroup property is to create hostgroups for individual 
 
 ```
 releases:
-- {name: dynatrace-oneagent, version: 1.2.1}
+- {name: dynatrace-oneagent, version: 1.3.2}
 
 addons:
 - name: dynatrace-oneagent-addon
@@ -243,7 +243,7 @@ When applying host groups to multiple deployments, the entire addon block is dup
 
 ```
 releases:
-- {name: dynatrace-oneagent, version: 1.2.1}
+- {name: dynatrace-oneagent, version: 1.3.2}
 
 addons:
 - name: dynatrace-oneagent-addon-xyz
