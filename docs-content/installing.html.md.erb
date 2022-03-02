@@ -5,7 +5,7 @@ owner: Partners
 
 This topic explains how to install and configure the Dynatrace Full-Stack Add-on for VMware Tanzu.
 
-<p class="note"><strong>Note:</strong> The syntax for the Dynatrace manifest is identical for TAS and PKS. As such, if no detailed include/exclude rules are used the same manifest can be utilized for both TAS and PKS. In deployments utilizing Pivotal Operations Manager (OpsMan) 2.5 or greater where both TAS and PKS are configured by the same OpsMan instance, this means both TAS and PKS can be monitored simulatenously via a single deployment of the Dynatrace Full-Stack Add-on.</p>
+<p class="note"><strong>Note:</strong> The syntax for the Dynatrace manifest is identical for TAS and TKGI. As such, if no detailed include/exclude rules are used the same manifest can be utilized for both TAS and TKGI. In deployments utilizing Pivotal Operations Manager (OpsMan) 2.5 or greater where both TAS and TKGI are configured by the same OpsMan instance, this means both TAS and TKGI can be monitored simulatenously via a single deployment of the Dynatrace Full-Stack Add-on.</p>
 
 ## <a id='create-mfest'></a> Create the Dynatrace Manifest
 
@@ -18,7 +18,7 @@ Follow these steps to create the Dynatrace manifest for your deployment:
 ```
 releases:
 - name: dynatrace-oneagent
-  version: 1.3.2
+  version: 1.4.0
 
 addons:
 - name: dynatrace-oneagent-addon
@@ -28,7 +28,7 @@ addons:
     properties:
       dynatrace:
         environmentid: <environmentId>
-        apitoken: <paas-token>
+        apitoken: <paas-token> # sorry it's confusing :(
         ###
         # optional properties below
         ###
@@ -57,13 +57,12 @@ addons:
         # Hand over any installer argument
         # Use either this OR the hostgroup, hosttags, infraonly, proxy properties.
         # Usage of 'installerargs' will overwrite the others!
-        # Usage of USER= and GROUP= arguments will change user and group for plugin and network agents
-        installerargs: USER=vcap GROUP=vcap
+        installerargs: HOST_GROUP=example_hostgroup INFRA_ONLY=0
   include:
     deployments:
       - name-of-your-deployment
     stemcell:
-      - os: ubuntu-xenial
+      - os: ubuntu-bionic
   exclude:
     lifecycle: errand
 
@@ -76,12 +75,13 @@ addons:
     properties:
       dynatrace:
         environmentid: <environmentId>
-        apitoken: <paas-token>
-        # All of the optional properties for the Linux addon shown above (for example, apiurl, hostgroup) can also be used here.  include:
+        apitoken: <paas-token>  # sorry it's confusing :(
+        # All of the optional properties for the Linux addon shown above (for example, apiurl, hostgroup) can also be used here.  
+  include:
     deployments:
       - name-of-your-deployment
     stemcell:
-      - os: windows1803
+      - os: windows
   exclude:
     lifecycle: errand
 ```
@@ -160,7 +160,7 @@ $ cd PATH-TO-BINARY</pre>
     <pre class="terminal">
     Acting as user 'admin' on 'micro'
     releases:
-    <span>-</span> {name: dynatrace-oneagent, version: 1.3.2}
+    <span>-</span> {name: dynatrace-oneagent, version: 1.4.0}
     addons:
     <span>-</span> name: dynatrace-oneagent-addon
       jobs:
@@ -185,21 +185,21 @@ For more information read the [full host group documentation.](https://www.dynat
 
 ## <a id='host-groups-examples'></a> Hostgroup Property Examples
 
-An example use of the hostgroup property is to create hostgroups for individual Pivotal Container Service (PKS) clusters 
+An example use of the hostgroup property is to create hostgroups for individual Tanzu Kubernetes Grid - Integrated (TKGI) clusters 
 
 1. Log in to the BOSH Director.
   <ol type="i">
     <li>
-      Log in to PKS. 
+      Log in to TKGI. 
       For example:
-      <pre class="terminal">$ pks login -a api.pks.somedomain.com -u someusername</pre>
+      <pre class="terminal">$ tkgi login -a api.tkgi.somedomain.com -u someusername</pre>
     </li>
   </ol>
-1. Determine the UUID for the PKS cluster (will begin with service-instance_) 
+1. Determine the UUID for the TKGI cluster (will begin with service-instance_) 
   <ol type="i">
   <li>
     For example:
-    <pre class="terminal">$ pks cluster my-cluster</pre>
+    <pre class="terminal">$ tkgi cluster my-cluster</pre>
     output snipped for brevity:
     <pre class="terminal"> UUID:                     a4604071-07df-49e7-92d1-2effc9e3fe42</pre>
   </li>
@@ -209,7 +209,7 @@ An example use of the hostgroup property is to create hostgroups for individual 
 
 ```
 releases:
-- {name: dynatrace-oneagent, version: 1.3.2}
+- {name: dynatrace-oneagent, version: 1.4.0}
 
 addons:
 - name: dynatrace-oneagent-addon
@@ -221,15 +221,15 @@ addons:
     # enter the BOSH deployment name, in the format of service-instance_<UUID-OBTAINED-IN-PREVIOUS-STEP>
     - service-instance_a4604071-07df-49e7-92d1-2effc9e3fe42
     stemcell:
-    - os: ubuntu-xenial
+    - os: ubuntu-bionic
   exclude:
     lifecycle: errand
   properties:
     dynatrace:
       environmentid: <environmentid>
       apitoken: <token>
-      # Specify a hostgroup for this PKS cluster
-      hostgroup: pks_cluster_xyz
+      # Specify a hostgroup for this TKGI cluster
+      hostgroup: tkgi_cluster_xyz
 ```
 
 1. Update your runtime configuration to include the Dynatrace Add-on for VMware Tanzu.
@@ -245,7 +245,7 @@ When applying host groups to multiple deployments, the entire addon block is dup
 
 ```
 releases:
-- {name: dynatrace-oneagent, version: 1.3.2}
+- {name: dynatrace-oneagent, version: 1.4.0}
 
 addons:
 - name: dynatrace-oneagent-addon-xyz
@@ -264,8 +264,8 @@ addons:
     dynatrace:
       environmentid: <environmentid>
       apitoken: <token>
-      # Specify a hostgroup for this PKS cluster
-      hostgroup: pks_cluster_xyz
+      # Specify a hostgroup for this TKGI cluster
+      hostgroup: tkgi_cluster_xyz
 - name: dynatrace-oneagent-abc
   jobs:
   - name: dynatrace-oneagent
@@ -282,6 +282,6 @@ addons:
     dynatrace:
       environmentid: <environmentid>
       apitoken: <token>
-      # Specify a hostgroup for this PKS cluster
-      hostgroup: pks_cluster_abc         
+      # Specify a hostgroup for this TKGI cluster
+      hostgroup: tkgi_cluster_abc         
 ```
