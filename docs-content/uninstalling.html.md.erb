@@ -12,32 +12,32 @@ This topic describes how to uninstall Dynatrace from your deployment of VMware T
 
 1. Retrieve the latest runtime config.
 
-```
-    $ bosh -e my-env runtime-config > PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
-```
+  ```
+      $ bosh -e my-env runtime-config > PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
+  ```
 
 1. Remove the `addons` section(s) for Dynatrace.
 
-```
-  addons:
-  \- name: dynatrace-oneagent-addon
-  ...
-  \- name: dynatrace-oneagent-windows-addon
-  ...
-```
+  ```
+    addons:
+    \- name: dynatrace-oneagent-addon
+    ...
+    \- name: dynatrace-oneagent-windows-addon
+    ...
+  ```
 
 If no other addons are defined, use an empty array.
 
-```
-  addons: []
-```
+  ```
+    addons: []
+  ```
 
 1. Update the runtime config.
 
-```
-    $ bosh -e my-env update-runtime-config PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
-```
+  ```
+      $ bosh -e my-env update-runtime-config PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
+  ```
 
 1. Navigate to your **Installation Dashboard** in Ops Manager.
 
-2. Click **Apply Changes**.
+1. Click **Apply Changes**.

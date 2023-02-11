@@ -19,16 +19,16 @@ This topic describes how to upgrade the Dynatrace Full-Stack Add-On for VMware T
 
 1. Change the release version.
 
-```
-releases:
-- {name: dynatrace-oneagent, version: NEW_VERSION}
-```
+  ```
+  releases:
+  - {name: dynatrace-oneagent, version: NEW_VERSION}
+  ```
 
 1. Update the runtime config.
 
-```
-    $ bosh -e my-env update-runtime-config PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
-```
+  ```
+      $ bosh -e my-env update-runtime-config PATH\_TO\_SAVE\_THE\_RUNTIME\_CONFIG
+  ```
 
 1. Navigate to your **Installation Dashboard** in Ops Manager.
 
